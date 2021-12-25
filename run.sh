@@ -6,6 +6,7 @@
 # Paths config
 # ==============
 SCRIPT_ROOT=$( readlink -f $( dirname "${BASH_SOURCE[0]}" ) )
+cd "$SCRIPT_ROOT"
 
 # ==============
 # Sources
