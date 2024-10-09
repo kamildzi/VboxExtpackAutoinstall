@@ -39,6 +39,7 @@ main() {
 
     # remove old version
     printNotice "" "Trying to remove old extpack version ..."
+    $authPrefix vboxmanage extpack cleanup
     $authPrefix vboxmanage extpack uninstall "$INSTALL_NAME" && confirmSuccess
     $authPrefix vboxmanage extpack uninstall "$INSTALL_NAME_v7_1_x" && confirmSuccess
     $authPrefix vboxmanage extpack cleanup
