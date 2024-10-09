@@ -13,12 +13,14 @@ VBOX_VERSION="`getVboxVersion`"
 # download source
 REPOSITORY="https://download.virtualbox.org/virtualbox"
 FILE_NAME="Oracle_VM_VirtualBox_Extension_Pack-$VBOX_VERSION.vbox-extpack"
+FILE_NAME_v7_1_x="Oracle_VirtualBox_Extension_Pack-$VBOX_VERSION.vbox-extpack"
 
-# save location (will be removed automaticaly)
-SAVE_LOCATION="/tmp/$FILE_NAME"
+# save location directory (file will be removed automaticaly)
+SAVE_LOCATION_DIR="/tmp"
 
-# package name (will be use for removing the old Extension Pack version)
+# package name (will be used for removing the old Extension Pack version)
 INSTALL_NAME="Oracle VM VirtualBox Extension Pack"
+INSTALL_NAME_v7_1_x="Oracle VirtualBox Extension Pack"
 
 
 # ===================================

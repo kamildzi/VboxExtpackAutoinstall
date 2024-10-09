@@ -18,15 +18,30 @@ main() {
         printText "Detected VirtualBox version: $VBOX_VERSION"
     fi
 
+    testLowerVersion=$(getLowerVersion 7.1.0 $VBOX_VERSION)
+
+    if [[ $testLowerVersion == "7.1.0" ]]; then
+        # version is equal or higher then "7.1.0"
+        printText "(detected version is is equal or higher then '7.1.0')"
+        FILE_NAME="$FILE_NAME_v7_1_x"
+    fi
+
+    if [[ ! -d "$SAVE_LOCATION_DIR" ]]; then
+        printError "Not a directory: '$SAVE_LOCATION_DIR'!"
+        failExit
+    fi
+    SAVE_LOCATION="$SAVE_LOCATION_DIR/$FILE_NAME"
+
     # download new version
     printNotice "" "Downloading the extpack ..."
     wget "$REPOSITORY/$VBOX_VERSION/$FILE_NAME" -O "$SAVE_LOCATION" \
         && confirmSuccess || failExit
 
     # remove old version
-    printNotice "" "Removing old extpack version ..."
-    $authPrefix vboxmanage extpack uninstall "$INSTALL_NAME" \
-        && confirmSuccess || failExit
+    printNotice "" "Trying to remove old extpack version ..."
+    $authPrefix vboxmanage extpack uninstall "$INSTALL_NAME" && confirmSuccess
+    $authPrefix vboxmanage extpack uninstall "$INSTALL_NAME_v7_1_x" && confirmSuccess
+    $authPrefix vboxmanage extpack cleanup
 
     # install new version
     printNotice "" "Installing new extpack version ..."
@@ -36,6 +51,20 @@ main() {
     # all done
     printSuccess "" "Installation is done!"
     terminate
+}
+
+# Version comparator. Prints the lower version (e.g. 7.0.0).
+# $1 - version text (e.g. 7.0.0)
+# $1 - version text (e.g. 7.1.0)
+getLowerVersion(){ 
+    echo -e "$1\n$2" | sort -V | head -n1
+}
+
+# Version comparator. Prints the higher version (e.g. 7.1.0).
+# $1 - version text (e.g. 7.0.0)
+# $1 - version text (e.g. 7.1.0)
+getHigherVersion(){ 
+    echo -e "$1\n$2" | sort -rV | head -n1
 }
 
 # print standard success message
